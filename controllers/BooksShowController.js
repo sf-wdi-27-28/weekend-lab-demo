@@ -4,6 +4,9 @@ angular.module('libraryApp')
 BooksShowController.$inject=['$http', '$routeParams', '$location'];
 function BooksShowController($http, $routeParams, $location) {
   var vm = this;
+  vm.editing = false;
+
+
   $http({
     method:'GET',
     url: 'https://super-crud.herokuapp.com/books/' + $routeParams.id
@@ -35,4 +38,22 @@ function BooksShowController($http, $routeParams, $location) {
       $location.path('/');
     })
   }
+
+  vm.startEdit = function(){
+    vm.editing = true;
+    vm.preEditedBook = {
+      _id: vm.book._id,
+      title: vm.book.title,
+      author: vm.book.author,
+      image: vm.book.image,
+      releaseDate: vm.book.releaseDate
+    };
+    console.log(vm.preEditedBook)
+  }
+
+  vm.cancelEdits = function(){
+    vm.editing = false;
+    vm.book = vm.preEditedBook;
+  }
+
 };
